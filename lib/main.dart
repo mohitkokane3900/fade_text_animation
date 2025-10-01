@@ -46,6 +46,55 @@ class _HomeScreenState extends State<HomeScreen> {
   final PageController controller = PageController();
   Color textColor = Colors.black;
 
+  Future<void> pickColor() async {
+    final palette = [
+      Colors.black,
+      Colors.white,
+      Colors.red,
+      Colors.green,
+      Colors.blue,
+      Colors.orange,
+      Colors.purple,
+      Colors.teal,
+    ];
+    Color? chosen = await showDialog<Color>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Pick Text Color'),
+          content: SizedBox(
+            width: 280,
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: palette.map((c) {
+                return InkWell(
+                  onTap: () => Navigator.of(context).pop(c),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: c,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black12),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+    if (chosen != null) setState(() => textColor = chosen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -53,6 +102,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Fading Text Animation'),
         actions: [
+          IconButton(
+            onPressed: pickColor,
+            icon: const Icon(Icons.palette_outlined),
+            tooltip: 'Text Color',
+          ),
           IconButton(
             onPressed: widget.onToggleTheme,
             icon: Icon(
