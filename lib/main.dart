@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode mode = ThemeMode.light;
+  void toggleMode() => setState(
+    () => mode = mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light,
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,15 +28,16 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: Colors.indigo,
         brightness: Brightness.dark,
       ),
-      themeMode: ThemeMode.light,
-      home: const HomeScreen(),
+      themeMode: mode,
+      home: HomeScreen(onToggleTheme: toggleMode),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final VoidCallback onToggleTheme;
+  const HomeScreen({super.key, required this.onToggleTheme});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -37,8 +48,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(title: const Text('Fading Text Animation')),
+      appBar: AppBar(
+        title: const Text('Fading Text Animation'),
+        actions: [
+          IconButton(
+            onPressed: widget.onToggleTheme,
+            icon: Icon(
+              isDark ? Icons.wb_sunny_outlined : Icons.nightlight_round,
+            ),
+            tooltip: isDark ? 'Day Mode' : 'Night Mode',
+          ),
+        ],
+      ),
       body: PageView(
         controller: controller,
         children: [
