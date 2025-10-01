@@ -190,7 +190,7 @@ class _FadingViewState extends State<FadingView> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                  'assets/sample.jpg',
+                  '../assets/image.png',
                   width: 240,
                   height: 160,
                   fit: BoxFit.cover,
