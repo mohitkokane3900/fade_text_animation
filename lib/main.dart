@@ -163,6 +163,41 @@ class _FadingViewState extends State<FadingView> {
               ),
             ),
           ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Show Frame'),
+              Switch(
+                value: showFrame,
+                onChanged: (v) => setState(() => showFrame = v),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                border: showFrame
+                    ? Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 3,
+                      )
+                    : null,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/sample.jpg',
+                  width: 240,
+                  height: 160,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
